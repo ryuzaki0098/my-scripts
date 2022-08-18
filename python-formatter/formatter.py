@@ -27,7 +27,7 @@ def format_all_files(path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python formatter.py <path>")
+        print("Usage: python formatter.py <path> > output_file*.py")
         sys.exit(1)
     path = sys.argv[1]
     format_all_files(path)
