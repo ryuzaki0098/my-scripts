@@ -1,19 +1,20 @@
-#!/bin/bash env python
+#!/bin/bash env python 
 
-from typing import List
-
-import pytube
+from pytube import Stream
 from pytube import YouTube
-import os
-def download_video(url):
-    yt = YouTube(url)
-    video = yt.streams.get_highest_resolution()  
-    print("Video downloaded")
-    video.download()
+from tqdm import tqdm
 
-def main():
-    url = input("Enter the url of the video: ")
-    download_video(url)
 
-if __name__ == "__main__":
-    main()
+def progress_callback(stream: Stream, data_chunk: bytes, bytes_remaining: int) -> None:
+    pbar.update(len(data_chunk))
+
+
+url = input("enter url \n")
+yt = YouTube(url, on_progress_callback=progress_callback)
+stream = yt.streams.get_highest_resolution()
+print(f"Downloading video to '{stream.default_filename}'")
+pbar = tqdm(total=stream.filesize, unit="bytes")
+path = stream.download()
+pbar.close()
+print(f"Saved video to {path}")
+
