@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VirusTotal API v3 key
-API_KEY="<api-key>"
+API_KEY="<ur-api-key>"
 
 search_vt() {
   # check if input is a URL
