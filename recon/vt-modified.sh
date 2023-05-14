@@ -1,11 +1,18 @@
 #!/bin/bash
 
 # Set your VirusTotal API key here
-VT_API_KEY="api-key"
+VT_API_KEY=""
 # Get the file hash, IP address, and URL from user input
 read -p "Enter the file hash (MD5, SHA1, or SHA256): " file_hash
 read -p "Enter the IP address: " ip_address
 read -p "Enter the URL: " url
+
+# Query the file hash through VirusTotal
+if [[ -n "${file_hash}" ]]; then
+    curl -X GET "https://www.virustotal.com/api/v3/files/${file_hash}" \
+        -H "x-apikey: ${VT_API_KEY}" \
+        | jq .
+fi
 
 # Extract the domain name from the URL
 if [[ -n "${url}" ]]; then
@@ -16,7 +23,7 @@ fi
 # Perform a WHOIS lookup on the domain name
 if [[ -n "${domain}" ]]; then
     whois_output=$(whois "${domain}")
-    echo "${whois_output}"
+    #echo "${whois_output}"
 
     # Extract the IP address from the WHOIS output
     ip_address=$(echo "${whois_output}" | awk '/^   [Ii][Pp] [Aa]ddress:/ {print $NF}')
